@@ -1,134 +1,157 @@
 
-from flask import Flask, render_template, request, jsonify
+# MongoDB connection
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from pymongo import MongoClient
+from bson.objectid import ObjectId
+import bcrypt
 from datetime import datetime
-import uuid
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key'  # Replace with a secure secret key
 
 # MongoDB connection
 client = MongoClient('mongodb+srv://umatiyaaziz2004_db_user:lkCvLsRTypDho7Wx@siramik.k3vxnao.mongodb.net/')
 db = client['invoice_db']
 invoices_collection = db['invoices']
+users_collection = db['users']
 
-# Helper function to format date
-def format_date(date_str):
-    if not date_str:
-        return ''
-    try:
-        dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
-        return dt.strftime('%d %B, %Y')
-    except:
-        return date_str
+# Generate invoice number
+def generate_invoice_number(user_id):
+    last_invoice = invoices_collection.find_one({'user_id': user_id}, sort=[('number', -1)])
+    if last_invoice and last_invoice['number'].startswith('G2FEE'):
+        last_number = int(last_invoice['number'].replace('G2FEE', ''))
+        new_number = f'G2FEE{last_number + 1:03d}'
+    else:
+        new_number = 'G2FEE001'
+    return new_number
 
-# Routes
+# Routes for authentication
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        data = request.form
+        mobile = data.get('mobile')
+        password = data.get('password').encode('utf-8')
+
+        # Check if user already exists
+        if users_collection.find_one({'mobile': mobile}):
+            return jsonify({'error': 'Mobile number already registered'}), 400
+
+        # Hash password and save user
+        hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+        users_collection.insert_one({'mobile': mobile, 'password': hashed_password})
+        return redirect(url_for('login'))
+    
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        data = request.form
+        mobile = data.get('mobile')
+        password = data.get('password').encode('utf-8')
+
+        user = users_collection.find_one({'mobile': mobile})
+        if user and bcrypt.checkpw(password, user['password']):
+            session['user_id'] = mobile
+            return redirect(url_for('index'))
+        else:
+            return jsonify({'error': 'Invalid mobile number or password'}), 401
+    
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return redirect(url_for('login'))
+
+# Main index route (protected)
 @app.route('/')
 def index():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     return render_template('index.html')
 
-@app.route('/api/invoices', methods=['GET'])
-def get_invoices():
-    invoices = list(invoices_collection.find())
+# API routes for invoices (user-specific)
+@app.route('/api/invoice-number')
+def get_invoice_number():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+    return jsonify({'number': generate_invoice_number(session['user_id'])})
+
+@app.route('/api/invoices', methods=['GET', 'POST'])
+def handle_invoices():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    user_id = session['user_id']
+    
+    if request.method == 'POST':
+        data = request.json
+        data['user_id'] = user_id
+        data['created_at'] = datetime.utcnow()
+        result = invoices_collection.insert_one(data)
+        data['_id'] = str(result.inserted_id)
+        return jsonify({'message': 'Invoice saved successfully', 'id': data['_id']}), 201
+    
+    invoices = list(invoices_collection.find({'user_id': user_id}))
     for inv in invoices:
         inv['_id'] = str(inv['_id'])
-        inv['date'] = format_date(inv.get('date', ''))
-        inv['nameDate'] = format_date(inv.get('nameDate', ''))
-        inv['total'] = float(inv['total']) if 'total' in inv else 0
-        inv['amountPaid'] = float(inv.get('amountPaid', 0))
-        inv['payments'] = inv.get('payments', [])
     return jsonify(invoices)
 
-@app.route('/api/invoices', methods=['POST'])
-def save_invoice():
-    data = request.json
-    invoice = {
-        '_id': str(uuid.uuid4()),
-        'number': data['number'],
-        'date': data['date'],
-        'name': data['name'],
-        'address': data['address'],
-        'city': data['city'],
-        'nameNumber': data.get('nameNumber', ''),
-        'nameDate': data.get('nameDate', ''),
-        'npn': data.get('npn', ''),
-        'items': data['items'],
-        'total': float(data['total']),
-        'amountPaid': float(data.get('amountPaid', 0)),
-        'payments': data.get('payments', []),
-        'amountInWords': data.get('amountInWords', ''),
-        'numberValue': data.get('numberValue', ''),
-        'createdAt': datetime.utcnow().isoformat()
-    }
-    invoices_collection.insert_one(invoice)
-    return jsonify({'message': 'Invoice saved successfully', 'id': invoice['_id']})
+@app.route('/api/invoices/<id>', methods=['GET', 'PUT', 'DELETE'])
+def handle_invoice(id):
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
 
-@app.route('/api/invoices/<id>', methods=['GET'])
-def get_invoice(id):
-    invoice = invoices_collection.find_one({'_id': id})
-    if not invoice:
-        return jsonify({'error': 'Invoice not found'}), 404
-    invoice['_id'] = str(invoice['_id'])
-    invoice['date'] = format_date(invoice.get('date', ''))
-    invoice['nameDate'] = format_date(invoice.get('nameDate', ''))
-    invoice['total'] = float(invoice['total'])
-    invoice['amountPaid'] = float(invoice.get('amountPaid', 0))
-    return jsonify(invoice)
+    user_id = session['user_id']
+    
+    try:
+        oid = ObjectId(id)
+    except:
+        return jsonify({'error': 'Invalid invoice ID'}), 400
 
-@app.route('/api/invoices/<id>', methods=['PUT'])
-def update_invoice(id):
-    data = request.json
-    invoice = {
-        'number': data['number'],
-        'date': data['date'],
-        'name': data['name'],
-        'address': data['address'],
-        'city': data['city'],
-        'nameNumber': data.get('nameNumber', ''),
-        'nameDate': data.get('nameDate', ''),
-        'npn': data.get('npn', ''),
-        'items': data['items'],
-        'total': float(data['total']),
-        'amountPaid': float(data.get('amountPaid', 0)),
-        'payments': data.get('payments', []),
-        'amountInWords': data.get('amountInWords', ''),
-        'numberValue': data.get('numberValue', ''),
-        'updatedAt': datetime.utcnow().isoformat()
-    }
-    result = invoices_collection.update_one({'_id': id}, {'$set': invoice})
-    if result.matched_count == 0:
-        return jsonify({'error': 'Invoice not found'}), 404
-    return jsonify({'message': 'Invoice updated successfully'})
+    if request.method == 'GET':
+        invoice = invoices_collection.find_one({'_id': oid, 'user_id': user_id})
+        if not invoice:
+            return jsonify({'error': 'Invoice not found'}), 404
+        invoice['_id'] = str(invoice['_id'])
+        return jsonify(invoice)
+    
+    if request.method == 'PUT':
+        data = request.json
+        data['user_id'] = user_id
+        data['updated_at'] = datetime.utcnow()
+        result = invoices_collection.update_one({'_id': oid, 'user_id': user_id}, {'$set': data})
+        if result.matched_count == 0:
+            return jsonify({'error': 'Invoice not found'}), 404
+        return jsonify({'message': 'Invoice updated successfully'})
+    
+    if request.method == 'DELETE':
+        result = invoices_collection.delete_one({'_id': oid, 'user_id': user_id})
+        if result.deleted_count == 0:
+            return jsonify({'error': 'Invoice not found'}), 404
+        return jsonify({'message': 'Invoice deleted successfully'})
 
-@app.route('/api/invoices/<id>', methods=['DELETE'])
-def delete_invoice(id):
-    result = invoices_collection.delete_one({'_id': id})
-    if result.deleted_count == 0:
-        return jsonify({'error': 'Invoice not found'}), 404
-    return jsonify({'message': 'Invoice deleted successfully'})
-
-@app.route('/api/invoices/search', methods=['GET'])
+@app.route('/api/invoices/search')
 def search_invoices():
-    name = request.args.get('name', '').lower()
-    address = request.args.get('address', '').lower()
-    query = {}
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    user_id = session['user_id']
+    name = request.args.get('name', '')
+    address = request.args.get('address', '')
+    query = {'user_id': user_id}
+    
     if name:
         query['name'] = {'$regex': name, '$options': 'i'}
     if address:
         query['address'] = {'$regex': address, '$options': 'i'}
+    
     invoices = list(invoices_collection.find(query))
     for inv in invoices:
         inv['_id'] = str(inv['_id'])
-        inv['date'] = format_date(inv.get('date', ''))
-        inv['nameDate'] = format_date(inv.get('nameDate', ''))
-        inv['total'] = float(inv['total'])
-        inv['amountPaid'] = float(inv.get('amountPaid', 0))
     return jsonify(invoices)
-
-@app.route('/api/invoice-number', methods=['GET'])
-def get_invoice_number():
-    last_invoice = invoices_collection.find_one(sort=[('createdAt', -1)])
-    counter = int(last_invoice['number'].replace('G2FEE', '')) + 1 if last_invoice else 1
-    return jsonify({'number': f'G2FEE{counter:03d}'})
 
 if __name__ == '__main__':
     app.run(debug=True)

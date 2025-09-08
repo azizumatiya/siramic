@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,77 +13,87 @@
             --success-color: #1cc88a;
             --warning-color: #f6c23e;
             --danger-color: #e74a3b;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: var(--font-family);
             line-height: 1.6;
+            font-size: 16px;
         }
 
         .invoice-container {
             background: white;
-            border-radius: 15px;
+            border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            padding: 2.5rem;
-            margin: 2rem 0;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
             transition: transform 0.3s ease;
         }
 
         .invoice-container:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
 
         .invoice-header {
-            border-bottom: 3px solid var(--primary-color);
-            padding-bottom: 1.5rem;
-            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .company-logo {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary-color);
             letter-spacing: 1px;
         }
 
         .invoice-title {
-            font-size: 2.25rem;
+            font-size: 1.75rem;
             font-weight: 800;
             color: var(--secondary-color);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
         }
 
         .search-section {
             background: var(--primary-color);
             color: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
         }
 
         .invoice-table {
             width: 100%;
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
         }
 
         .invoice-table th {
             background: var(--primary-color);
             color: white;
-            padding: 0.75rem;
+            padding: 0.5rem;
             font-weight: 600;
+            font-size: 0.9rem;
         }
 
         .invoice-table td {
             vertical-align: middle;
+            padding: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .btn {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
         }
 
         .btn-primary {
             background: var(--primary-color);
             border-color: var(--primary-color);
-            transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
@@ -110,6 +119,8 @@
 
         .form-control, .form-select {
             border-radius: 6px;
+            font-size: 0.9rem;
+            padding: 0.5rem;
             transition: border-color 0.3s ease;
         }
 
@@ -119,16 +130,17 @@
         }
 
         .payment-history {
-            max-height: 200px;
+            max-height: 150px;
             overflow-y: auto;
             background: #f8f9fa;
             border-radius: 6px;
-            padding: 1rem;
+            padding: 0.75rem;
+            font-size: 0.85rem;
         }
 
         .payment-row {
             border-bottom: 1px solid #dee2e6;
-            padding: 0.5rem 0;
+            padding: 0.4rem 0;
             transition: background 0.2s ease;
         }
 
@@ -156,9 +168,80 @@
         .print-invoice {
             display: none;
             font-family: Arial, sans-serif;
-            padding: 20px;
-            width: 800px;
+            padding: 15px;
+            width: 100%;
+            max-width: 800px;
             margin: auto;
+        }
+
+        @media (max-width: 767.98px) {
+            body {
+                font-size: 14px;
+            }
+
+            .invoice-container {
+                padding: 1rem;
+                margin: 1rem 0.5rem;
+            }
+
+            .company-logo {
+                font-size: 1.2rem;
+            }
+
+            .invoice-title {
+                font-size: 1.4rem;
+            }
+
+            .invoice-table th, .invoice-table td {
+                font-size: 0.75rem;
+                padding: 0.4rem;
+            }
+
+            .invoice-table th:nth-child(3), .invoice-table td:nth-child(3) {
+                display: none;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .form-control, .form-select {
+                font-size: 0.8rem;
+                padding: 0.4rem;
+            }
+
+            .search-section {
+                padding: 0.75rem;
+            }
+
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+
+            .modal-footer {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .payment-history {
+                max-height: 120px;
+                font-size: 0.75rem;
+            }
+
+            .d-flex.gap-2 {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
 
         @media print {
@@ -180,7 +263,8 @@
             }
             .print-invoice th, .print-invoice td {
                 border: 1px solid #000;
-                padding: 8px;
+                padding: 6px;
+                font-size: 12px;
             }
             .print-invoice th {
                 background: #eee;
@@ -189,18 +273,21 @@
     </style>
 </head>
 <body>
-    <div class="container py-5">
+    <div class="container py-3">
         <div class="row">
-            <div class="col-lg-12">
-                <h1 class="text-center mb-4 text-primary">
-                    <i class=""></i>SIRAMIK WELDING WORKERS
-                </h1>
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1 class="text-center text-primary">
+                        <i class="fas fa-tools me-2"></i>SIRAMIK WELDING WORKERS
+                    </h1>
+                    <a href="/logout" class="btn btn-danger"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+                </div>
 
                 <!-- Search Section -->
                 <div class="search-section">
-                    <h3 class="mb-4"><i class="fas fa-search me-2"></i>Search Invoices</h3>
-                    <div class="row g-3">
-                        <div class="col-md-5">
+                    <h3 class="mb-3"><i class="fas fa-search me-2"></i>Search Invoices</h3>
+                    <div class="row g-2">
+                        <div class="col-12 col-md-5">
                             <label for="nameSearch" class="form-label">Search by Name</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="nameSearch" placeholder="Enter name">
@@ -209,7 +296,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-12 col-md-5">
                             <label for="addressSearch" class="form-label">Search by Address</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="addressSearch" placeholder="Enter address">
@@ -218,7 +305,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-md-2 d-flex align-items-end">
+                        <div class="col-12 col-md-2 d-flex align-items-end">
                             <button class="btn btn-light w-100" id="resetBtn">
                                 <i class="fas fa-sync-alt me-2"></i>Reset
                             </button>
@@ -230,53 +317,53 @@
                 <div class="invoice-container">
                     <div class="invoice-header">
                         <div class="row align-items-center">
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <div class="company-logo">SIRAMIK WELDING WORKERS</div>
-                                <p class="mb-1">Opposite Banas Complex, Near Rajasthan Marbal</p>
-                                <p class="mb-1">Navavas,Danta,Pin-Code: 385120, B.K</p>
-                                <p class="mb-1">Phone: 9428354635</p>
-                                <p class="mb-0">Email: yourname@gmail.com | www.siramikwelder.com</p>
+                                <p class="mb-1 small">Opposite Banas Complex, Near Rajasthan Marbal</p>
+                                <p class="mb-1 small">Navavas, Danta, Pin-Code: 385120, B.K</p>
+                                <p class="mb-1 small">Phone: 9428354635</p>
+                                <p class="mb-0 small">Email: yourname@gmail.com | www.siramikwelder.com</p>
                             </div>
-                            <div class="col-md-6 text-end">
+                            <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
                                 <div class="invoice-title">INVOICE</div>
-                                <p class="mb-1">Invoice #: <span id="invoiceNumber">G2FEE001</span></p>
-                                <p class="mb-0">Date: <span id="invoiceDate"></span></p>
+                                <p class="mb-1 small">Invoice #: <span id="invoiceNumber">G2FEE001</span></p>
+                                <p class="mb-0 small">Date: <span id="invoiceDate"></span></p>
                             </div>
                         </div>
                     </div>
 
                     <form id="invoiceForm" novalidate>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
+                        <div class="row g-2 mb-3">
+                            <div class="col-12 col-md-6">
                                 <label for="customerName" class="form-label">Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="customerName" required>
                                 <div class="invalid-feedback">Please enter a name.</div>
 
-                                <label for="customerAddress" class="form-label mt-3">Address <span class="text-danger">*</span></label>
+                                <label for="customerAddress" class="form-label mt-2">Address <span class="text-danger">*</span></label>
                                 <textarea class="form-control" id="customerAddress" rows="2" required></textarea>
                                 <div class="invalid-feedback">Please enter an address.</div>
 
-                                <label for="customerCity" class="form-label mt-3">City <span class="text-danger">*</span></label>
+                                <label for="customerCity" class="form-label mt-2">City <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="customerCity" required>
                                 <div class="invalid-feedback">Please enter a city.</div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <label for="nameNumber" class="form-label">Mobile Number</label>
                                 <input type="text" class="form-control" id="nameNumber">
 
-                                <label class="form-label mt-3">Date</label>
+                                <label class="form-label mt-2">Date</label>
                                 <div class="d-flex gap-2">
                                     <select id="nameMonth" class="form-select"></select>
                                     <input type="number" id="nameDay" class="form-control" placeholder="Day" min="1" max="31">
                                     <input type="number" id="nameYear" class="form-control" placeholder="Year" min="1900" max="2100">
                                 </div>
 
-                                <label for="npn" class="form-label mt-3">NPN</label>
+                                <label for="npn" class="form-label mt-2">NPN</label>
                                 <input type="text" class="form-control" id="npn">
                             </div>
                         </div>
 
-                        <div class="table-responsive mb-4">
+                        <div class="table-responsive mb-3">
                             <table class="table invoice-table table-bordered">
                                 <thead>
                                     <tr>
@@ -317,8 +404,8 @@
                             </button>
                         </div>
 
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
+                        <div class="row g-2 mb-3">
+                            <div class="col-12 col-md-6">
                                 <div class="card border-0 shadow-sm">
                                     <div class="card-header bg-light">
                                         <h5 class="mb-0">Record Payment</h5>
@@ -328,11 +415,11 @@
                                         <input type="number" id="paymentAmount" min="0" class="form-control">
                                         <div class="invalid-feedback">Please enter a valid amount.</div>
 
-                                        <label for="paymentDate" class="form-label mt-3">Date <span class="text-danger">*</span></label>
+                                        <label for="paymentDate" class="form-label mt-2">Date <span class="text-danger">*</span></label>
                                         <input type="date" id="paymentDate" class="form-control" required>
                                         <div class="invalid-feedback">Please select a date.</div>
 
-                                        <label for="paymentMethod" class="form-label mt-3">Method</label>
+                                        <label for="paymentMethod" class="form-label mt-2">Method</label>
                                         <select id="paymentMethod" class="form-select">
                                             <option value="Cash">Cash</option>
                                             <option value="Bank Transfer">Bank Transfer</option>
@@ -340,13 +427,13 @@
                                             <option value="Check">Check</option>
                                             <option value="Other">Other</option>
                                         </select>
-                                        <button type="button" id="recordPayment" class="btn btn-success mt-3">
+                                        <button type="button" id="recordPayment" class="btn btn-success mt-2">
                                             <i class="fas fa-money-bill-wave me-1"></i>Record Payment
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <div class="card border-0 shadow-sm">
                                     <div class="card-header bg-light">
                                         <h5 class="mb-0">Payment History</h5>
@@ -358,18 +445,18 @@
                             </div>
                         </div>
 
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
+                        <div class="row g-2 mb-3">
+                            <div class="col-12 col-md-6">
                                 <label for="amountInWords" class="form-label">Amount in words</label>
                                 <textarea id="amountInWords" class="form-control" rows="2" readonly></textarea>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <label for="numberValue" class="form-label">Number value</label>
                                 <input id="numberValue" type="text" class="form-control" readonly>
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-wrap justify-content-between gap-2">
                             <button type="button" id="saveDraft" class="btn btn-secondary">
                                 <i class="fas fa-save me-1"></i>Save Draft
                             </button>
@@ -384,8 +471,8 @@
                 </div>
 
                 <!-- Saved Invoices -->
-                <div class="invoice-container mt-5">
-                    <h3 class="mb-4"><i class="fas fa-list me-2"></i>Saved Invoices</h3>
+                <div class="invoice-container mt-4">
+                    <h3 class="mb-3"><i class="fas fa-list me-2"></i>Saved Invoices</h3>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -416,37 +503,37 @@
                                 <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="invoice-header mb-4">
+                                <div class="invoice-header mb-3">
                                     <div class="row align-items-center">
-                                        <div class="col-md-6">
+                                        <div class="col-12 col-md-6">
                                             <div class="company-logo">SIRAMIK WELDING WORKERS</div>
-                                            <p class="mb-1">Opposite Banas Complex, Near Rajasthan Marbal</p>
-                                            <p class="mb-1">Navavas,Danta,Pin-Code: 385120, B.K</p>
-                                            <p class="mb-1">Phone: 9428354635</p>
-                                            <p class="mb-0">Email: yourname@gmail.com | www.siramikwelder.com</p>
+                                            <p class="mb-1 small">Opposite Banas Complex, Near Rajasthan Marbal</p>
+                                            <p class="mb-1 small">Navavas, Danta, Pin-Code: 385120, B.K</p>
+                                            <p class="mb-1 small">Phone: 9428354635</p>
+                                            <p class="mb-0 small">Email: yourname@gmail.com | www.siramikwelder.com</p>
                                         </div>
-                                        <div class="col-md-6 text-end">
+                                        <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
                                             <div class="invoice-title">INVOICE</div>
-                                            <p class="mb-1">Invoice #: <span id="viewInvoiceNumber"></span></p>
-                                            <p class="mb-0">Date: <span id="viewInvoiceDate"></span></p>
+                                            <p class="mb-1 small">Invoice #: <span id="viewInvoiceNumber"></span></p>
+                                            <p class="mb-0 small">Date: <span id="viewInvoiceDate"></span></p>
                                         </div>
                                     </div>
                                 </div>
-                                <dl class="row mb-4">
-                                    <dt class="col-sm-3">Name</dt>
-                                    <dd class="col-sm-9" id="viewCustomerName"></dd>
-                                    <dt class="col-sm-3">Address</dt>
-                                    <dd class="col-sm-9" id="viewCustomerAddress"></dd>
-                                    <dt class="col-sm-3">City</dt>
-                                    <dd class="col-sm-9" id="viewCustomerCity"></dd>
-                                    <dt class="col-sm-3">Mobile Number</dt>
-                                    <dd class="col-sm-9" id="viewNameNumber"></dd>
-                                    <dt class="col-sm-3">Date</dt>
-                                    <dd class="col-sm-9" id="viewNameDate"></dd>
-                                    <dt class="col-sm-3">NPN</dt>
-                                    <dd class="col-sm-9" id="viewNpn"></dd>
+                                <dl class="row mb-3">
+                                    <dt class="col-4 col-md-3">Name</dt>
+                                    <dd class="col-8 col-md-9" id="viewCustomerName"></dd>
+                                    <dt class="col-4 col-md-3">Address</dt>
+                                    <dd class="col-8 col-md-9" id="viewCustomerAddress"></dd>
+                                    <dt class="col-4 col-md-3">City</dt>
+                                    <dd class="col-8 col-md-9" id="viewCustomerCity"></dd>
+                                    <dt class="col-4 col-md-3">Mobile Number</dt>
+                                    <dd class="col-8 col-md-9" id="viewNameNumber"></dd>
+                                    <dt class="col-4 col-md-3">Date</dt>
+                                    <dd class="col-8 col-md-9" id="viewNameDate"></dd>
+                                    <dt class="col-4 col-md-3">NPN</dt>
+                                    <dd class="col-8 col-md-9" id="viewNpn"></dd>
                                 </dl>
-                                <div class="table-responsive mb-4">
+                                <div class="table-responsive mb-3">
                                     <table class="table table-bordered invoice-table">
                                         <thead>
                                             <tr>
@@ -480,12 +567,12 @@
                                         <p class="text-center text-muted">No payments recorded</p>
                                     </div>
                                 </div>
-                                <div class="row mt-4">
-                                    <div class="col-md-6">
-                                        <p><strong>Amount in words:</strong> <span id="viewAmountInWords"></span></p>
+                                <div class="row mt-3">
+                                    <div class="col-12 col-md-6">
+                                        <p class="small"><strong>Amount in words:</strong> <span id="viewAmountInWords"></span></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <p><strong>Number value:</strong> <span id="viewNumberValue"></span></p>
+                                    <div class="col-12 col-md-6">
+                                        <p class="small"><strong>Number value:</strong> <span id="viewNumberValue"></span></p>
                                     </div>
                                 </div>
                             </div>
@@ -508,53 +595,53 @@
                                 <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="invoice-header mb-4">
+                                <div class="invoice-header mb-3">
                                     <div class="row align-items-center">
-                                        <div class="col-md-6">
+                                        <div class="col-12 col-md-6">
                                             <div class="company-logo">SIRAMIK WELDING WORKERS</div>
-                                            <p class="mb-1">Opposite Banas Complex, Near Rajasthan Marbal</p>
-                                            <p class="mb-1">Navavas,Danta,Pin-Code: 385120, B.K</p>
-                                            <p class="mb-1">Phone: 9428354635</p>
-                                            <p class="mb-0">Email: yourname@gmail.com | www.siramikwelder.com</p>
+                                            <p class="mb-1 small">Opposite Banas Complex, Near Rajasthan Marbal</p>
+                                            <p class="mb-1 small">Navavas, Danta, Pin-Code: 385120, B.K</p>
+                                            <p class="mb-1 small">Phone: 9428354635</p>
+                                            <p class="mb-0 small">Email: yourname@gmail.com | www.siramikwelder.com</p>
                                         </div>
-                                        <div class="col-md-6 text-end">
+                                        <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
                                             <div class="invoice-title">INVOICE</div>
-                                            <p class="mb-1">Invoice #: <span id="editInvoiceNumber"></span></p>
-                                            <p class="mb-0">Date: <span id="editInvoiceDate"></span></p>
+                                            <p class="mb-1 small">Invoice #: <span id="editInvoiceNumber"></span></p>
+                                            <p class="mb-0 small">Date: <span id="editInvoiceDate"></span></p>
                                         </div>
                                     </div>
                                 </div>
                                 <form id="editInvoiceForm" novalidate>
-                                    <div class="row g-3 mb-4">
-                                        <div class="col-md-6">
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-12 col-md-6">
                                             <label for="editCustomerName" class="form-label">Name <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="editCustomerName" required>
                                             <div class="invalid-feedback">Please enter a name.</div>
 
-                                            <label for="editCustomerAddress" class="form-label mt-3">Address <span class="text-danger">*</span></label>
+                                            <label for="editCustomerAddress" class="form-label mt-2">Address <span class="text-danger">*</span></label>
                                             <textarea class="form-control" id="editCustomerAddress" rows="2" required></textarea>
                                             <div class="invalid-feedback">Please enter an address.</div>
 
-                                            <label for="editCustomerCity" class="form-label mt-3">City <span class="text-danger">*</span></label>
+                                            <label for="editCustomerCity" class="form-label mt-2">City <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="editCustomerCity" required>
                                             <div class="invalid-feedback">Please enter a city.</div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-12 col-md-6">
                                             <label for="editNameNumber" class="form-label">Mobile Number</label>
                                             <input type="text" class="form-control" id="editNameNumber">
 
-                                            <label class="form-label mt-3">Date</label>
+                                            <label class="form-label mt-2">Date</label>
                                             <div class="d-flex gap-2">
                                                 <select id="editNameMonth" class="form-select"></select>
                                                 <input type="number" id="editNameDay" class="form-control" placeholder="Day" min="1" max="31">
                                                 <input type="number" id="editNameYear" class="form-control" placeholder="Year" min="1900" max="2100">
                                             </div>
 
-                                            <label for="editNpn" class="form-label mt-3">NPN</label>
+                                            <label for="editNpn" class="form-label mt-2">NPN</label>
                                             <input type="text" class="form-control" id="editNpn">
                                         </div>
                                     </div>
-                                    <div class="table-responsive mb-4">
+                                    <div class="table-responsive mb-3">
                                         <table class="table table-bordered invoice-table">
                                             <thead>
                                                 <tr>
@@ -587,8 +674,8 @@
                                             <i class="fas fa-plus me-1"></i>Add Item
                                         </button>
                                     </div>
-                                    <div class="row g-3 mb-4">
-                                        <div class="col-md-6">
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-12 col-md-6">
                                             <div class="card border-0 shadow-sm">
                                                 <div class="card-header bg-light">
                                                     <h5 class="mb-0">Record Payment</h5>
@@ -598,11 +685,11 @@
                                                     <input type="number" id="editPaymentAmount" min="0" class="form-control">
                                                     <div class="invalid-feedback">Please enter a valid amount.</div>
 
-                                                    <label for="editPaymentDate" class="form-label mt-3">Date <span class="text-danger">*</span></label>
+                                                    <label for="editPaymentDate" class="form-label mt-2">Date <span class="text-danger">*</span></label>
                                                     <input type="date" id="editPaymentDate" class="form-control" required>
                                                     <div class="invalid-feedback">Please select a date.</div>
 
-                                                    <label for="editPaymentMethod" class="form-label mt-3">Method</label>
+                                                    <label for="editPaymentMethod" class="form-label mt-2">Method</label>
                                                     <select id="editPaymentMethod" class="form-select">
                                                         <option value="Cash">Cash</option>
                                                         <option value="Bank Transfer">Bank Transfer</option>
@@ -610,13 +697,13 @@
                                                         <option value="Check">Check</option>
                                                         <option value="Other">Other</option>
                                                     </select>
-                                                    <button type="button" id="editRecordPayment" class="btn btn-success mt-3">
+                                                    <button type="button" id="editRecordPayment" class="btn btn-success mt-2">
                                                         <i class="fas fa-money-bill-wave me-1"></i>Record Payment
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-12 col-md-6">
                                             <div class="card border-0 shadow-sm">
                                                 <div class="card-header bg-light">
                                                     <h5 class="mb-0">Payment History</h5>
@@ -627,12 +714,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row g-3 mb-4">
-                                        <div class="col-md-6">
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-12 col-md-6">
                                             <label for="editAmountInWords" class="form-label">Amount in words</label>
                                             <textarea id="editAmountInWords" class="form-control" rows="2" readonly></textarea>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-12 col-md-6">
                                             <label for="editNumberValue" class="form-label">Number value</label>
                                             <input id="editNumberValue" type="text" class="form-control" readonly>
                                         </div>
@@ -651,21 +738,21 @@
 
                 <!-- Printable Invoice -->
                 <div id="printArea" class="print-invoice">
-                    <div style="width: 800px; font-family: Arial, sans-serif; color: black; margin: auto;">
+                    <div style="font-family: Arial, sans-serif; color: black; width: 100%; max-width: 800px; margin: auto; padding: 10px;">
                         <h2 style="color: #4e73df; text-align: center;">SIRAMIK WELDING WORKERS</h2>
-                        <p style="text-align: center; margin: 0;">Opposite Banas Complex, Near Rajasthan Marbal</p>
-                        <p style="text-align: center; margin: 0;">Navavas,Danta,Pin-Code: 385120, B.K</p>
-                        <p style="text-align: center; margin: 0;">Phone: 9428354635</p>
-                        <p style="text-align: center; margin-bottom: 25px;">Email: yourname@gmail.com | www.siramikwelder.com</p>
+                        <p style="text-align: center; margin: 0; font-size: 12px;">Opposite Banas Complex, Near Rajasthan Marbal</p>
+                        <p style="text-align: center; margin: 0; font-size: 12px;">Navavas, Danta, Pin-Code: 385120, B.K</p>
+                        <p style="text-align: center; margin: 0; font-size: 12px;">Phone: 9428354635</p>
+                        <p style="text-align: center; margin-bottom: 20px; font-size: 12px;">Email: yourname@gmail.com | www.siramikwelder.com</p>
 
-                        <h3 style="text-align: center; margin: 20px 0;">INVOICE</h3>
+                        <h3 style="text-align: center; margin: 15px 0; font-size: 16px;">INVOICE</h3>
 
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 12px;">
                             <div><strong>Invoice #:</strong> <span id="printInvoiceNumber"></span></div>
                             <div><strong>Date:</strong> <span id="printInvoiceDate"></span></div>
                         </div>
 
-                        <div style="margin-bottom: 20px;">
+                        <div style="margin-bottom: 15px; font-size: 12px;">
                             <p><strong>Name:</strong> <span id="printCustomerName"></span></p>
                             <p><strong>Address:</strong> <span id="printCustomerAddress"></span></p>
                             <p><strong>City:</strong> <span id="printCustomerCity"></span></p>
@@ -674,40 +761,40 @@
                             <p><strong>NPN:</strong> <span id="printNpn"></span></p>
                         </div>
 
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 12px;">
                             <thead style="background: #eee;">
                                 <tr>
-                                    <th style="border: 1px solid black; padding: 8px;">Description</th>
-                                    <th style="border: 1px solid black; padding: 8px;">Rate (₹)</th>
-                                    <th style="border: 1px solid black; padding: 8px;">Amount (₹)</th>
+                                    <th style="border: 1px solid black; padding: 6px;">Description</th>
+                                    <th style="border: 1px solid black; padding: 6px;">Rate (₹)</th>
+                                    <th style="border: 1px solid black; padding: 6px;">Amount (₹)</th>
                                 </tr>
                             </thead>
                             <tbody id="printInvoiceItems"></tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="2" style="text-align: right; font-weight: bold; border: 1px solid black; padding: 8px;">Total</td>
-                                    <td style="border: 1px solid black; padding: 8px;"><span id="printInvoiceTotal"></span></td>
+                                    <td colspan="2" style="text-align: right; font-weight: bold; border: 1px solid black; padding: 6px;">Total</td>
+                                    <td style="border: 1px solid black; padding: 6px;"><span id="printInvoiceTotal"></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" style="text-align: right; font-weight: bold; border: 1px solid black; padding: 8px;">Paid</td>
-                                    <td style="border: 1px solid black; padding: 8px;"><span id="printAmountPaid"></span></td>
+                                    <td colspan="2" style="text-align: right; font-weight: bold; border: 1px solid black; padding: 6px;">Paid</td>
+                                    <td style="border: 1px solid black; padding: 6px;"><span id="printAmountPaid"></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" style="text-align: right; font-weight: bold; border: 1px solid black; padding: 8px;">Balance</td>
-                                    <td style="border: 1px solid black; padding: 8px;"><span id="printBalance"></span></td>
+                                    <td colspan="2" style="text-align: right; font-weight: bold; border: 1px solid black; padding: 6px;">Balance</td>
+                                    <td style="border: 1px solid black; padding: 6px;"><span id="printBalance"></span></td>
                                 </tr>
                             </tfoot>
                         </table>
 
-                        <div style="margin-bottom: 20px;">
-                            <h5 style="margin-bottom: 10px;">Payment History</h5>
-                            <div id="printPaymentHistory"></div>
+                        <div style="margin-bottom: 15px;">
+                            <h5 style="margin-bottom: 8px; font-size: 14px;">Payment History</h5>
+                            <div id="printPaymentHistory" style="font-size: 12px;"></div>
                         </div>
 
-                        <p style="margin-top: 15px;"><strong>Amount in words:</strong> <span id="printAmountInWords"></span></p>
-                        <p><strong>Number value:</strong> <span id="printNumberValue"></span></p>
+                        <p style="margin-top: 10px; font-size: 12px;"><strong>Amount in words:</strong> <span id="printAmountInWords"></span></p>
+                        <p style="font-size: 12px;"><strong>Number value:</strong> <span id="printNumberValue"></span></p>
 
-                        <p style="text-align: center; margin-top: 30px; font-style: italic;">Thank you for your business!</p>
+                        <p style="text-align: center; margin-top: 20px; font-style: italic; font-size: 12px;">Thank you for your business!</p>
                     </div>
                 </div>
             </div>
@@ -1386,9 +1473,9 @@
             invoice.items.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="border: 1px solid black; padding: 8px;">${item.description}</td>
-                    <td style="border: 1px solid black; padding: 8px; text-align: right;">₹${item.rate.toFixed(2)}</td>
-                    <td style="border: 1px solid black; padding: 8px; text-align: right;">₹${item.amount.toFixed(2)}</td>
+                    <td style="border: 1px solid black; padding: 6px;">${item.description}</td>
+                    <td style="border: 1px solid black; padding: 6px; text-align: right;">₹${item.rate.toFixed(2)}</td>
+                    <td style="border: 1px solid black; padding: 6px; text-align: right;">₹${item.amount.toFixed(2)}</td>
                 `;
                 tbody.appendChild(tr);
             });
